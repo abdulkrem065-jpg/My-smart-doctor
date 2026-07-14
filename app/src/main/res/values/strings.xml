@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Virtual Doctor</string>
+    <string name="welcome">Welcome to Virtual Doctor</string>
+    <string name="ai_doctor">AI Doctor</string>
+    <string name="appointments">Appointments</string>
+    <string name="medications">Medications</string>
+    <string name="library">Medical Library</string>
+    <string name="pharmacies">Find Pharmacy</string>
+    <string name="chat_hint">Describe your symptoms...</string>
+    <string name="upload_report">Upload Report</string>
+    <string name="add_appointment">Add Appointment</string>
+    <string name="add_medication">Add Medication</string>
+    <string name="save">Save</string>
+</resources>

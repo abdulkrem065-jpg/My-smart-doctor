@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">الطبيب الافتراضي</string>
+    <string name="welcome">مرحباً بك في الطبيب الافتراضي</string>
+    <string name="ai_doctor">الطبيب الذكي</string>
+    <string name="appointments">المواعيد</string>
+    <string name="medications">الأدوية</string>
+    <string name="library">المكتبة الطبية</string>
+    <string name="pharmacies">البحث عن صيدلية</string>
+    <string name="chat_hint">صف الأعراض التي تشعر بها...</string>
+    <string name="upload_report">رفع تقرير طبي</string>
+    <string name="add_appointment">إضافة موعد</string>
+    <string name="add_medication">إضافة دواء</string>
+    <string name="save">حفظ</string>
+</resources>
