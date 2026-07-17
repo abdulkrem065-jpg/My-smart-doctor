@@ -16,11 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.R
 import com.example.data.AppRepository
 import com.example.data.Medication
+import com.example.workers.MedicationReminderWorker
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -59,6 +61,7 @@ class MedicationsViewModelFactory(private val repository: AppRepository) : ViewM
 fun MedicationsScreen(navController: NavController, repository: AppRepository) {
     val viewModel: MedicationsViewModel = viewModel(factory = MedicationsViewModelFactory(repository))
     val medications by viewModel.medications.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -77,19 +80,35 @@ fun MedicationsScreen(navController: NavController, repository: AppRepository) {
             }
         }
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(16.dp)
         ) {
-            items(medications) { med ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = med.name, style = MaterialTheme.typography.titleMedium)
-                        Text(text = "Dosage: ${med.dosage}", style = MaterialTheme.typography.bodyMedium)
-                        Text(text = "${med.timesPerDay} times a day", style = MaterialTheme.typography.bodySmall)
+            Button(
+                onClick = {
+                    // Trigger worker directly for testing
+                    androidx.work.WorkManager.getInstance(context).enqueue(
+                        androidx.work.OneTimeWorkRequestBuilder<MedicationReminderWorker>().build()
+                    )
+                },
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            ) {
+                Text("تذكير الآن")
+            }
+            
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(medications) { med ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = med.name, style = MaterialTheme.typography.titleMedium)
+                            Text(text = "Dosage: ${med.dosage}", style = MaterialTheme.typography.bodyMedium)
+                            Text(text = "${med.timesPerDay} times a day", style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }

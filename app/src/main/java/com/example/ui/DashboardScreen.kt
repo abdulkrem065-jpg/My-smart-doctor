@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.LocalPharmacy
@@ -42,6 +43,7 @@ data class DashboardItem(val titleResId: Int, val icon: ImageVector, val route: 
 fun DashboardScreen(navController: NavController) {
     val items = listOf(
         DashboardItem(R.string.ai_doctor, Icons.Default.Chat, "chat", Color(0xFFD1E4FF), Color(0xFF001D36)),
+        DashboardItem(R.string.history, Icons.Default.History, "history", Color(0xFFFFF0C2), Color(0xFF4B3900)),
         DashboardItem(R.string.appointments, Icons.Default.DateRange, "appointments", Color(0xFFE1F4E1), Color(0xFF002104)),
         DashboardItem(R.string.medications, Icons.Default.MedicalInformation, "medications", Color(0xFFFFDADA), Color(0xFF410002)),
         DashboardItem(R.string.library, Icons.Default.LibraryBooks, "library", Color(0xFFD1E4FF), Color(0xFF001D36)),

@@ -11,4 +11,5 @@
     <string name="add_appointment">Add Appointment</string>
     <string name="add_medication">Add Medication</string>
     <string name="save">Save</string>
+    <string name="history">سجل التشخيصات</string>
 </resources>

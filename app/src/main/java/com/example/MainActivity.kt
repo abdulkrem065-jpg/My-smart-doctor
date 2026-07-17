@@ -18,14 +18,34 @@ import com.example.ui.ChatScreen
 import com.example.ui.DashboardScreen
 import com.example.ui.MedicationsScreen
 import com.example.ui.theme.MyApplicationTheme
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.utils.NotificationHelper
+import com.example.workers.MedicationReminderWorker
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
+    private fun scheduleDailyReminders() {
+        val workRequest = PeriodicWorkRequestBuilder<MedicationReminderWorker>(
+            1, TimeUnit.DAYS
+        ).build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "medication_reminder",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
+        NotificationHelper.createNotificationChannel(this)
+        scheduleDailyReminders()
+        
         val db = AppDatabase.getDatabase(this)
-        val repository = AppRepository(db.appointmentDao(), db.medicationDao())
+        val repository = AppRepository(db.appointmentDao(), db.medicationDao(), db.diagnosisDao())
         
         setContent {
             MyApplicationTheme {
@@ -36,9 +56,10 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "dashboard") {
                         composable("dashboard") { DashboardScreen(navController) }
-                        composable("chat") { ChatScreen(navController) }
+                        composable("chat") { ChatScreen(navController, repository) }
                         composable("appointments") { AppointmentsScreen(navController, repository) }
                         composable("medications") { MedicationsScreen(navController, repository) }
+                        composable("history") { com.example.ui.HistoryScreen(navController, repository) }
                         composable("library") { /* Optional placeholder */ }
                         composable("pharmacies") { /* Optional placeholder */ }
                         composable("reports") { /* Optional placeholder */ }
